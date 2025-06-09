@@ -1,3 +1,5 @@
+-- +goose Up
+-- +goose StatementBegin
 CREATE TABLE IF NOT EXISTS items
 (
     id         SERIAL PRIMARY KEY,
@@ -16,3 +18,10 @@ CREATE TABLE IF NOT EXISTS lists
     deleted_at TIMESTAMP DEFAULT NULL,
     name       TEXT NOT NULL
 );
+-- +goose StatementEnd
+
+-- +goose Down
+-- +goose StatementBegin
+DROP TABLE IF EXISTS items;
+DROP TABLE IF EXISTS lists;
+-- +goose StatementEnd

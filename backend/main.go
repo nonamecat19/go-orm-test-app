@@ -32,6 +32,10 @@ func getRouter() *fiber.App {
 }
 
 func main() {
+	if err := database.RunMigrations(); err != nil {
+		log.Fatalf("Failed to run migrations: %v", err)
+	}
+
 	database.InitDbClient()
 	app := getRouter()
 
