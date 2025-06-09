@@ -73,5 +73,5 @@ func setupRoutes(app *fiber.App) {
 		entities.List{},
 	}
 
-	studio.AddStudioFiberGroup(app, tables, database.DbClient, "/admin")
+	studio.AddStudioFiberGroup(app, tables, database.DbClient, "/api/admin")
 }
