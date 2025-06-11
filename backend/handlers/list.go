@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/log"
 	"github.com/nonamecat19/go-orm/orm/lib/querybuilder"
 	"shopping-list/backend/database"
 	"shopping-list/backend/entities"
@@ -37,6 +38,7 @@ func CreateList(c *fiber.Ctx) error {
 		InsertOne(newList)
 
 	if err != nil {
+		log.Error(err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": fmt.Sprintf("Не вдалось додати список: %s", err),
 		})
@@ -51,6 +53,7 @@ func GetLists(c *fiber.Ctx) error {
 	lists, err := services.GetAllLists()
 
 	if err != nil {
+		log.Error(err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Не вдалось отримати списки",
 		})
@@ -62,6 +65,7 @@ func GetLists(c *fiber.Ctx) error {
 func GetList(c *fiber.Ctx) error {
 	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
 	if err != nil {
+		log.Error(err)
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Invalid list ID",
 		})
@@ -70,7 +74,7 @@ func GetList(c *fiber.Ctx) error {
 	err, listResult := services.GetListWithItems(id)
 
 	if err != nil {
-		fmt.Println(err)
+		log.Error(err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Не вдалось отримати списки",
 		})
@@ -82,6 +86,7 @@ func GetList(c *fiber.Ctx) error {
 func DeleteList(c *fiber.Ctx) error {
 	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
 	if err != nil {
+		log.Error(err)
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Invalid item ID",
 		})
@@ -90,6 +95,7 @@ func DeleteList(c *fiber.Ctx) error {
 	err = services.DeleteList(id)
 
 	if err != nil {
+		log.Error(err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Failed to delete list",
 		})

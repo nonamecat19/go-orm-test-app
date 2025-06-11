@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/log"
 	"shopping-list/backend/entities"
 	"shopping-list/backend/services"
 	"strconv"
@@ -30,6 +31,7 @@ func CreateItem(c *fiber.Ctx) error {
 	err := services.CreateItem(newItem)
 
 	if err != nil {
+		fmt.Println(err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": fmt.Sprintf("Не вдалось додати товар: %s", err),
 		})
@@ -56,6 +58,7 @@ func GetItems(c *fiber.Ctx) error {
 func UpdateItem(c *fiber.Ctx) error {
 	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
 	if err != nil {
+		log.Error(err)
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Invalid item ID",
 		})
@@ -63,6 +66,7 @@ func UpdateItem(c *fiber.Ctx) error {
 
 	var itemUpdate services.ItemUpdate
 	if err = c.BodyParser(&itemUpdate); err != nil {
+		log.Error(err)
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Invalid request body",
 		})
@@ -71,7 +75,7 @@ func UpdateItem(c *fiber.Ctx) error {
 	err = services.UpdateItem(itemUpdate, id)
 
 	if err != nil {
-		fmt.Println(err)
+		log.Error(err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Failed to update item",
 		})
@@ -85,6 +89,7 @@ func UpdateItem(c *fiber.Ctx) error {
 func DeleteItem(c *fiber.Ctx) error {
 	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
 	if err != nil {
+		log.Error(err)
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Invalid item ID",
 		})
@@ -93,6 +98,7 @@ func DeleteItem(c *fiber.Ctx) error {
 	err = services.DeleteItem(id)
 
 	if err != nil {
+		log.Error(err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Failed to delete item",
 		})
