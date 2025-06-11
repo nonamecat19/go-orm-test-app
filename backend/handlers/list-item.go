@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"fmt"
-	"github.com/gofiber/fiber/v2/log"
 	"shopping-list/backend/services"
 	"strconv"
 
@@ -23,7 +22,7 @@ func AddItemToList(c *fiber.Ctx) error {
 	err := services.AddItemToList(addItemToList)
 
 	if err != nil {
-		log.Error(err)
+		fmt.Println(err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Помилка додавання продукту до списку",
 		})
@@ -37,14 +36,14 @@ func AddItemToList(c *fiber.Ctx) error {
 func RemoveItemFromList(c *fiber.Ctx) error {
 	listID, err := strconv.ParseInt(c.Params("listId"), 10, 64)
 	if err != nil {
-		log.Error(err)
+		fmt.Println(err)
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Непрвильний тип даних",
 		})
 	}
 	itemID, err := strconv.ParseInt(c.Params("itemId"), 10, 64)
 	if err != nil {
-		log.Error(err)
+		fmt.Println(err)
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Непрвильний тип даних",
 		})
@@ -53,7 +52,7 @@ func RemoveItemFromList(c *fiber.Ctx) error {
 	err = services.RemoveItemFromList(itemID, listID)
 
 	if err != nil {
-		log.Error(err)
+		fmt.Println(err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Помилка видалення продукту зі списку",
 		})
