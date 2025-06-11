@@ -10,7 +10,7 @@ require (
 	github.com/nonamecat19/go-orm/adapter-postgres v1.1.0
 	github.com/nonamecat19/go-orm/core v1.1.0
 	github.com/nonamecat19/go-orm/orm v1.2.0
-	github.com/nonamecat19/go-orm/studio v1.1.0
+	github.com/nonamecat19/go-orm/studio v1.2.0
 	github.com/pressly/goose/v3 v3.24.3
 )
 

@@ -233,8 +233,8 @@ github.com/nonamecat19/go-orm/core v1.1.0 h1:Nn+od2Jc8s3067DGhEmeRcMbOauU3IAUihj
 github.com/nonamecat19/go-orm/core v1.1.0/go.mod h1:taAOr57FlPNq2Tg8w/NrGCU6cE7NJfHr0t2f0JBSlMU=
 github.com/nonamecat19/go-orm/orm v1.2.0 h1:i8TyW5Y3Wg3lEIuFX+8aD86bVxkzc9+ejBKQ0EOAqjU=
 github.com/nonamecat19/go-orm/orm v1.2.0/go.mod h1:PX2u/KX40qva4aBr3JN75nCd+nIymvWQLWVYxVYrjfk=
-github.com/nonamecat19/go-orm/studio v1.1.0 h1:7MpCFynRJ0D8JccjYqDIfQe4fJj9sCGddbnUEEDUy24=
-github.com/nonamecat19/go-orm/studio v1.1.0/go.mod h1:Js4fZljKKd7evLdTdXe1u68Vra9a5WhVS7t4EsPKnkA=
+github.com/nonamecat19/go-orm/studio v1.2.0 h1:pxzFRxmnlhxfxZ9dEhCdnLHPWcml8xf9q18aU7Pva/M=
+github.com/nonamecat19/go-orm/studio v1.2.0/go.mod h1:Js4fZljKKd7evLdTdXe1u68Vra9a5WhVS7t4EsPKnkA=
 github.com/pascaldekloe/goe v0.0.0-20180627143212-57f6aae5913c/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144TG7ZOy1lc=
 github.com/pelletier/go-toml v1.9.3/go.mod h1:u1nR/EPcESfeI/szUZKdtJ0xRNbUoANCkoOuaOx1Y+c=
 github.com/pkg/diff v0.0.0-20210226163009-20ebb0f2a09e/go.mod h1:pJLUxLENpZxwdsKMEsNbx1VGcRFpLqf3715MtcvvzbA=
