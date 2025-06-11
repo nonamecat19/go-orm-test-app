@@ -49,7 +49,7 @@ func CreateList(c *fiber.Ctx) error {
 }
 
 func GetLists(c *fiber.Ctx) error {
-	lists, err := services.GetAllLists()
+	err, lists := services.GetAllLists()
 
 	if err != nil {
 		fmt.Println(err)
