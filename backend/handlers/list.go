@@ -6,6 +6,7 @@ import (
 	"github.com/nonamecat19/go-orm/orm/lib/querybuilder"
 	"shopping-list/backend/database"
 	"shopping-list/backend/entities"
+	"shopping-list/backend/services"
 	"strconv"
 )
 
@@ -47,11 +48,7 @@ func CreateList(c *fiber.Ctx) error {
 }
 
 func GetLists(c *fiber.Ctx) error {
-	var lists []entities.List
-
-	err := querybuilder.
-		CreateQueryBuilder(database.DbClient).
-		FindMany(&lists)
+	lists, err := services.GetAllLists()
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -70,14 +67,7 @@ func GetList(c *fiber.Ctx) error {
 		})
 	}
 
-	var list []entities.List
-
-	err = querybuilder.
-		CreateQueryBuilder(database.DbClient).
-		Where("id = ?", id).
-		Limit(1).
-		Preload("items").
-		FindMany(&list)
+	err, listResult := services.GetListWithItems(id)
 
 	if err != nil {
 		fmt.Println(err)
@@ -86,9 +76,7 @@ func GetList(c *fiber.Ctx) error {
 		})
 	}
 
-	fmt.Println(list[0])
-
-	return c.JSON(list[0])
+	return c.JSON(listResult)
 }
 
 func DeleteList(c *fiber.Ctx) error {
@@ -99,9 +87,7 @@ func DeleteList(c *fiber.Ctx) error {
 		})
 	}
 
-	err = querybuilder.CreateQueryBuilder(database.DbClient).
-		Where("id = ?", id).
-		DeleteMany(&entities.List{})
+	err = services.DeleteList(id)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{

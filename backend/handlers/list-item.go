@@ -2,21 +2,14 @@ package handlers
 
 import (
 	"fmt"
-	"github.com/nonamecat19/go-orm/orm/lib/querybuilder"
-	"shopping-list/backend/database"
-	"shopping-list/backend/entities"
+	"shopping-list/backend/services"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-type AddItemToListBody struct {
-	ItemId int `json:"itemId"`
-	ListId int `json:"listId"`
-}
-
 func AddItemToList(c *fiber.Ctx) error {
-	var addItemToList AddItemToListBody
+	var addItemToList services.AddItemToListBody
 
 	if err := c.BodyParser(&addItemToList); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -26,11 +19,7 @@ func AddItemToList(c *fiber.Ctx) error {
 
 	fmt.Println(addItemToList)
 
-	err := querybuilder.CreateQueryBuilder(database.DbClient).
-		Where("id = ?", addItemToList.ItemId).
-		SetValues(map[string]any{"list_id": addItemToList.ListId}).
-		Debug().
-		UpdateMany(&entities.Item{})
+	err := services.AddItemToList(addItemToList)
 
 	if err != nil {
 		fmt.Println(err)
@@ -58,11 +47,7 @@ func RemoveItemFromList(c *fiber.Ctx) error {
 		})
 	}
 
-	err = querybuilder.CreateQueryBuilder(database.DbClient).
-		Where("id = ?", itemID).
-		AndWhere("list_id = ?", listID).
-		SetValues(map[string]any{"list_id": nil}).
-		UpdateMany(&entities.Item{})
+	err = services.RemoveItemFromList(itemID, listID)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{

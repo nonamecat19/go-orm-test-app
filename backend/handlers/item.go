@@ -3,18 +3,13 @@ package handlers
 import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
-	"github.com/nonamecat19/go-orm/orm/lib/querybuilder"
-	"shopping-list/backend/database"
 	"shopping-list/backend/entities"
+	"shopping-list/backend/services"
 	"strconv"
 )
 
-type ItemCreate struct {
-	Name string `json:"name"`
-}
-
 func CreateItem(c *fiber.Ctx) error {
-	var itemCreate ItemCreate
+	var itemCreate services.ItemCreate
 	if err := c.BodyParser(&itemCreate); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Непрвильний тип даних",
@@ -32,9 +27,7 @@ func CreateItem(c *fiber.Ctx) error {
 		Bought: false,
 	}
 
-	err := querybuilder.
-		CreateQueryBuilder(database.DbClient).
-		InsertOne(newItem)
+	err := services.CreateItem(newItem)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -48,10 +41,7 @@ func CreateItem(c *fiber.Ctx) error {
 }
 
 func GetItems(c *fiber.Ctx) error {
-	var items []entities.Item
-	err := querybuilder.CreateQueryBuilder(database.DbClient).
-		Select("items.id", "items.name", "items.bought").
-		FindMany(&items)
+	err, items := services.GetAllItems()
 
 	if err != nil {
 		fmt.Println(err)
@@ -63,11 +53,6 @@ func GetItems(c *fiber.Ctx) error {
 	return c.JSON(items)
 }
 
-type ItemUpdate struct {
-	Name   string `json:"name,omitempty"`
-	Bought bool   `json:"bought,omitempty"`
-}
-
 func UpdateItem(c *fiber.Ctx) error {
 	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
 	if err != nil {
@@ -76,17 +61,14 @@ func UpdateItem(c *fiber.Ctx) error {
 		})
 	}
 
-	var itemUpdate ItemUpdate
+	var itemUpdate services.ItemUpdate
 	if err = c.BodyParser(&itemUpdate); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Invalid request body",
 		})
 	}
 
-	err = querybuilder.CreateQueryBuilder(database.DbClient).
-		Where("id = ?", id).
-		SetValues(map[string]any{"name": itemUpdate.Name, "bought": itemUpdate.Bought}).
-		UpdateMany(&entities.Item{})
+	err = services.UpdateItem(itemUpdate, id)
 
 	if err != nil {
 		fmt.Println(err)
@@ -108,9 +90,7 @@ func DeleteItem(c *fiber.Ctx) error {
 		})
 	}
 
-	err = querybuilder.CreateQueryBuilder(database.DbClient).
-		Where("id = ?", id).
-		DeleteMany(&entities.Item{})
+	err = services.DeleteItem(id)
 
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
