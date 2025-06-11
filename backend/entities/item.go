@@ -7,7 +7,7 @@ type Item struct {
 	Name   string `db:"name" json:"name"`
 	Bought bool   `db:"bought" json:"bought"`
 	ListId *int64 `db:"list_id" json:"listId,omitempty"`
-	List   *List  `relation:"list_id" json:"list,omitempty"`
+	List   *List  `db:"list" relation:"list_id" json:"list,omitempty"`
 }
 
 func (item Item) Info() string {
