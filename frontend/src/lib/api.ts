@@ -76,7 +76,7 @@ export const updateListItem = async (
   itemId: number,
   data: { name?: string; bought?: boolean },
 ): Promise<void> => {
-  await api.put(`/lists/${listId}/items/${itemId}`, data);
+  await api.patch(`/lists/${listId}/items/${itemId}`, data);
 };
 
 export const removeItemFromList = async (
