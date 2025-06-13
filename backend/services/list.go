@@ -16,6 +16,9 @@ func GetListWithItems(id int64) (err error, listResult entities.List) {
 		Preload("items").
 		FindMany(&list)
 
+	if len(list) == 0 {
+		return err, listResult
+	}
 	return err, list[0]
 }
 
